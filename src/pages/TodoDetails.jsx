@@ -1,9 +1,8 @@
-// src/pages/TodoDetail.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from 'antd';
-import '../styles/todoList.css'; // Reusing todoList.css for general styling
+import '../styles/todoList.css';
 
 const TodoDetails = () => {
   const { id } = useParams();
@@ -11,14 +10,14 @@ const TodoDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const JSONPLACEHOLDER_API_URL = `https://jsonplaceholder.typicode.com/todos/${id}`;
+  const BASE_URL = `https://jsonplaceholder.typicode.com/todos/${id}`;
 
   useEffect(() => {
     const fetchTodo = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(JSONPLACEHOLDER_API_URL);
+        const response = await axios.get(BASE_URL);
         setTodo(response.data);
       } catch (err) {
         let errorMessage = 'Failed to load todo details.';

@@ -1,4 +1,3 @@
-// src/components/ErrorBoundary.jsx
 import React from 'react';
 
 class ErrorBoundary extends React.Component {
@@ -8,32 +7,26 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true };
+    return { hasError: true, error };
   }
 
   componentDidCatch(error, errorInfo) {
-    // You can also log the error to an error reporting service
     console.error("ErrorBoundary caught an error:", error, errorInfo);
-    this.setState({
-      error: error,
-      errorInfo: errorInfo
-    });
+    this.setState({ errorInfo });
   }
 
   render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
       return (
-        <div style={{ padding: '20px', textAlign: 'center', color: 'red', border: '1px solid red', borderRadius: '8px', margin: '20px', backgroundColor: '#ffe6e6' }}>
-          <h2>Something went wrong.</h2>
-          <p>We're sorry for the inconvenience. Please try refreshing the page.</p>
-          {this.props.showDetails && this.state.error && (
-            <details style={{ whiteSpace: 'pre-wrap', textAlign: 'left', marginTop: '15px', padding: '10px', border: '1px solid #f0a0a0', backgroundColor: '#ffcccc', borderRadius: '5px' }}>
+        <div style={{ padding: '20px', textAlign: 'center', fontFamily: 'Arial, sans-serif', color: '#dc3545', backgroundColor: '#f8d7da', border: '1px solid #dc3545', borderRadius: '8px', margin: '20px' }}>
+          <h1 style={{ color: '#dc3545' }}>Oops! Something went wrong.</h1>
+          <p>We're sorry, but there was an unexpected error. Please try refreshing the page.</p>
+          {this.state.error && (
+            <details style={{ whiteSpace: 'pre-wrap', textAlign: 'left', marginTop: '20px', padding: '10px', backgroundColor: '#fbe9ea', borderRadius: '4px', border: '1px solid #efb8c1' }}>
               <summary>Error Details</summary>
-              <p>{this.state.error.toString()}</p>
+              {this.state.error.toString()}
               <br />
-              <p>{this.state.errorInfo.componentStack}</p>
+              {this.state.errorInfo.componentStack}
             </details>
           )}
         </div>

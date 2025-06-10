@@ -1,43 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import TodoList from './pages/TodoList';
-import TodoDetails from './pages/TodoDetails';
 import NotFound from './pages/NotFound';
 import ErrorBoundary from './components/ErrorBoundary';
-import './index.css'; // Global styles
+import './index.css';
+import TodoDetails from './pages/TodoDetails';
 
 function App() {
-  // State for theme: 'light' or 'dark'
-  const [theme, setTheme] = useState(() => {
-    // Initialize theme from localStorage or default to 'light'
-    const storedTheme = localStorage.getItem('theme');
-    return storedTheme || 'light';
-  });
+  const [currentTheme, setCurrentTheme] = useState('light');
 
-  // Effect to apply data-theme attribute to html tag
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme); // Persist theme preference
-  }, [theme]);
+    document.documentElement.setAttribute('data-theme', currentTheme);
+  }, [currentTheme]);
 
-  // Function to toggle theme
   const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+    setCurrentTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   return (
     <Router>
-      <ErrorBoundary showDetails={process.env.NODE_ENV === 'development'}>
+      <ErrorBoundary>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <TodoList
-                toggleTheme={toggleTheme} // Pass theme toggle function
-                currentTheme={theme}      // Pass current theme for icon/text
-              />
-            }
-          />
+          <Route path="/" element={<TodoList toggleTheme={toggleTheme} currentTheme={currentTheme} />} />
           <Route path="/todos/:id" element={<TodoDetails />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

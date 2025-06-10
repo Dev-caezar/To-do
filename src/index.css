@@ -1,109 +1,71 @@
-/* src/index.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Caveat:wght@400;700&display=swap');
 
-/* --- Global Color Definitions --- */
-/* These are abstract and will be mapped to actual shades in light/dark themes */
 :root {
-    --color-completed-base: #2196F3; /* Base blue for completed text status */
-    --color-uncompleted-base: #9C27B0; /* Base purple for uncompleted text status */
-    --color-success-indicator: #66BB6A; /* Green for success icons, checkmarks */
-    --color-danger-indicator: #EF5350; /* Red for errors, delete confirmations */
-}
-
-/* --- Light Mode Variables (Default Theme) - Vivid Blue Palette --- */
-:root {
-    /* Backgrounds & Surfaces */
-    --bg-primary: #E3F2FD; /* Very light blue */
-    --bg-surface: #FFFFFF; /* White for cards/containers */
-    --border-light: #BBDEFB; /* Light blue-gray border */
-    --bg-input: #EBF5FE; /* Even lighter blue for input backgrounds */
-
-    /* Text Colors */
-    --text-dark: #212121; /* Dark gray for main text */
-    --text-medium: #616161; /* Medium gray */
-    --text-light: #FFFFFF; /* White for text on dark backgrounds/buttons */
-    --text-black: #1A1A1A; /* Near black for specific elements like pagination numbers */
-    --text-link: #1976D2; /* Vivid blue for links */
-
-    /* Shadows */
+    --bg-primary: #F8F8F8;
+    --bg-surface: #FFFFFF;
+    --border-light: #E0E0E0;
+    --bg-input: #F0F0F0;
+    --text-dark: #333333;
+    --text-medium: #666666;
+    --text-light: #FFFFFF;
+    --text-black: #1A1A1A;
+    --text-link: #007bff;
     --shadow-small: rgba(0, 0, 0, 0.05);
     --shadow-medium: rgba(0, 0, 0, 0.1);
     --shadow-strong: rgba(0, 0, 0, 0.15);
-
-    /* --- Sticky Note Colors (All shades of Blue) --- */
-    --note-card-bg: #BBDEFB; /* Light blue for card background */
-    --note-card-border: #90CAF9; /* Slightly darker blue for card border */
-
-
-    /* Accent Colors (Green for success, Red for danger, Blue for primary actions) */
-    --accent-green: var(--color-success-indicator);
-    --accent-green-dark: #388E3C;
-    --accent-red: var(--color-danger-indicator);
-    --accent-red-dark: #C62828;
-    --accent-blue: var(--color-completed-base); /* Main vivid blue for primary actions (matches completed) */
-    --accent-blue-dark: #1976D2;
-
-    --primary-blue: var(--color-completed-base); /* Pagination button color - same as accent-blue */
-    --primary-blue-dark: #1976D2; /* Pagination button hover - same as accent-blue-dark */
-    --secondary-gray: #BDBDBD; /* Neutral gray for secondary actions */
-    --secondary-gray-dark: #9E9E9E;
+    --card-bg-color: #CCEEFF;
+    --card-border-color: #99DDFF;
+    --accent-green: #28a745;
+    --accent-green-dark: #218838;
+    --accent-red: #dc3545;
+    --accent-red-dark: #c82333;
+    --accent-blue: #007bff;
+    --accent-blue-dark: #0056b3;
+    --status-completed-color: #007bff;
+    --status-pending-color: #6f42c1;
 }
 
-/* --- Dark Mode Variables --- */
 html[data-theme='dark'] {
-    /* Backgrounds & Surfaces */
-    --bg-primary: #0D1A26; /* Very dark blue */
-    --bg-surface: #1E3A5F; /* Darker blue surface for containers */
-    --border-light: #2C4875; /* Medium dark blue border */
-    --bg-input: #274060; /* Dark input background */
-
-    /* Text Colors */
-    --text-dark: #E0E9F0; /* Lightest text on dark backgrounds */
-    --text-medium: #AABBCF; /* Lighter medium text */
-    --text-light: #000000; /* Black for text on light elements within dark theme */
-    --text-black: #FFFFFF; /* White for pagination button text in dark mode */
-    --text-link: #69C0FF; /* Very light blue for links */
-
-    /* Shadows (subtle in dark mode) */
+    --bg-primary: #1A1A1A;
+    --bg-surface: #2C2C2C;
+    --border-light: #444444;
+    --bg-input: #3A3A3A;
+    --text-dark: #E0E0E0;
+    --text-medium: #BBBBBB;
+    --text-light: #1A1A1A;
+    --text-black: #FFFFFF;
+    --text-link: #69C0FF;
     --shadow-small: rgba(255, 255, 255, 0.05);
     --shadow-medium: rgba(255, 255, 255, 0.1);
     --shadow-strong: rgba(255, 255, 255, 0.15);
-
-    /* --- Sticky Note Colors (All shades of Blue in Dark Mode) --- */
-    --note-card-bg: #365F8A; /* Darker blue for card background */
-    --note-card-border: #44729E; /* Even darker blue for card border */
-
-    /* Accent Colors (adjusted for dark mode visibility) */
-    --accent-green: #81C784; /* Soft green */
-    --accent-green-dark: #4CAF50;
-    --accent-red: #EF5350; /* Soft red, same as light */
-    --accent-red-dark: #C62828;
-    --accent-blue: #64B5F6; /* Main vivid blue, slightly lighter than light mode primary */
+    --card-bg-color: #1E3A5F;
+    --card-border-color: #2C4875;
+    --accent-green: #4CAF50;
+    --accent-green-dark: #388E3C;
+    --accent-red: #DC3545;
+    --accent-red-dark: #C82333;
+    --accent-blue: #64B5F6;
     --accent-blue-dark: #42A5F5;
-
-    --primary-blue: #64B5F6; /* Pagination button color */
-    --primary-blue-dark: #42A5F5; /* Pagination button hover */
-    --secondary-gray: #757575;
-    --secondary-gray-dark: #616161;
+    --status-completed-color: #64B5F6;
+    --status-pending-color: #BA68C8;
 }
-
 
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--bg-primary); /* Uses CSS variable */
-    color: var(--text-dark); /* Uses CSS variable */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+    background-color: var(--bg-primary);
+    color: var(--text-dark);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Basic reset */
 * {
     box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
 }
 
-/* Accessibility: Focus styles */
 :focus-visible {
     outline: 2px solid var(--accent-blue);
     outline-offset: 2px;

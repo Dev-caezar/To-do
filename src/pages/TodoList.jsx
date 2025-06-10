@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Checkbox, Modal, Form, Input, Button, notification, Dropdown, Menu } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, FilterOutlined, SunOutlined, MoonOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import '../styles/todoList.css'; // Main TodoList styling
+import '../styles/todoList.css';
 
 
 const TodoList = ({ toggleTheme, currentTheme }) => {
@@ -14,14 +14,12 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   
-  // CRUD Modal States
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
   const [editingTodo, setEditingTodo] = useState(null);
   const [deletingTodoId, setDeletingTodoId] = useState(null);
 
-  // Success Modal States
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successModalTitle, setSuccessModalTitle] = useState('');
   const [successModalMessage, setSuccessModalMessage] = useState('');
@@ -30,22 +28,20 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
   const [editForm] = Form.useForm();
 
   const todosPerPage = 10;
-  const JSONPLACEHOLDER_API_URL = 'https://jsonplaceholder.typicode.com/todos';
+  const BASE_URL = 'https://jsonplaceholder.typicode.com/todos';
 
-  // Helper function to show success modal
   const displaySuccessModal = (title, message) => {
     setSuccessModalTitle(title);
     setSuccessModalMessage(message);
     setShowSuccessModal(true);
   };
 
-  // --- Fetching Todos ---
   useEffect(() => {
     const fetchTodos = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(JSONPLACEHOLDER_API_URL);
+        const response = await axios.get(BASE_URL);
         setTodos(response.data);
       } catch (err) {
         let errorMessage = 'Failed to load todos.';
@@ -73,12 +69,9 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
     fetchTodos();
   }, []);
 
-  // --- CRUD Operations ---
-
-  // CREATE Todo
   const handleAddTodo = async (values) => {
     try {
-      const response = await axios.post(JSONPLACEHOLDER_API_URL, {
+      const response = await axios.post(BASE_URL, {
         title: values.title,
         completed: false,
         userId: 1,
@@ -90,7 +83,7 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
       setTodos(prevTodos => [newTodo, ...prevTodos]);
       setIsAddModalVisible(false);
       addForm.resetFields();
-      displaySuccessModal('Todo Added Successfully!', `"${values.title}" has been added.`);
+      displaySuccessModal('Todo Added Successfully!', `"${values.title}" has been added. (Note: JSONPlaceholder simulates this; data is not persistent)`);
     } catch (err) {
       notification.error({
         message: 'Add Todo Failed',
@@ -100,7 +93,6 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
     }
   };
 
-  // UPDATE Todo (Edit)
   const handleEditClick = (todo) => {
     setEditingTodo(todo);
     editForm.setFieldsValue({ title: todo.title, completed: todo.completed });
@@ -116,13 +108,13 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
         completed: values.completed,
         userId: editingTodo.userId,
       };
-      await axios.put(`${JSONPLACEHOLDER_API_URL}/${editingTodo.id}`, updatedTodoData);
+      await axios.put(`${BASE_URL}/${editingTodo.id}`, updatedTodoData);
       setTodos(prevTodos =>
         prevTodos.map(todo => (todo.id === editingTodo.id ? updatedTodoData : todo))
       );
       setIsEditModalVisible(false);
       setEditingTodo(null);
-      displaySuccessModal('Todo Updated Successfully!', `"${values.title}" has been updated.`);
+      displaySuccessModal('Todo Updated Successfully!', `"${values.title}" has been updated. (Note: JSONPlaceholder simulates this; data is not persistent)`);
     } catch (err) {
       notification.error({
         message: 'Update Todo Failed',
@@ -132,7 +124,6 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
     }
   };
 
-  // DELETE Todo
   const handleDeleteClick = (id) => {
     setDeletingTodoId(id);
     setIsDeleteConfirmVisible(true);
@@ -140,11 +131,11 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
 
   const handleConfirmDelete = async () => {
     try {
-      await axios.delete(`${JSONPLACEHOLDER_API_URL}/${deletingTodoId}`);
+      await axios.delete(`${BASE_URL}/${deletingTodoId}`);
       setTodos(prevTodos => prevTodos.filter(todo => todo.id !== deletingTodoId));
       setIsDeleteConfirmVisible(false);
       setDeletingTodoId(null);
-      displaySuccessModal('Todo Deleted Successfully!', 'The todo has been removed.');
+      displaySuccessModal('Todo Deleted Successfully!', 'The todo has been removed. (Note: JSONPlaceholder simulates this; data is not persistent)');
     } catch (err) {
       notification.error({
         message: 'Delete Todo Failed',
@@ -154,7 +145,6 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
     }
   };
 
-  // --- Filtering & Searching ---
   const filteredAndSearchedTodos = useMemo(() => {
     let filtered = todos;
 
@@ -172,7 +162,6 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
     return filtered;
   }, [todos, filterStatus, searchTerm]);
 
-  // --- Pagination Logic ---
   const indexOfLastTodo = currentPage * todosPerPage;
   const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
   const currentTodos = filteredAndSearchedTodos.slice(indexOfFirstTodo, indexOfLastTodo);
@@ -184,7 +173,6 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // --- Pagination Button Rendering ---
   const renderPageNumbers = () => {
     const pageNumbers = [];
     const maxPageButtons = 5;
@@ -272,7 +260,7 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
     <main className="todo-list-container">
       <div className="todo-list-wrapper">
         <header className="todo-list-header">
-          <h2>ALT SCHOOL</h2>
+          <h2>Sticky Wall</h2>
           <div className="header-controls-row">
             <Button
               type="primary"
@@ -299,7 +287,6 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
               </Button>
             </Dropdown>
 
-            {/* Theme Toggle Button */}
             <Button
               onClick={toggleTheme}
               className="theme-toggle-button"
@@ -316,7 +303,7 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
             <p className="no-todos-message">No todos found matching your criteria.</p>
           ) : (
             currentTodos.map(todo => (
-              <div key={todo.id} className="todo-item-card"> {/* Removed conditional class here */}
+              <div key={todo.id} className="todo-item-card">
                 <div className="todo-item-card-content">
                   <Checkbox checked={todo.completed} disabled aria-label={`Todo ${todo.title} is ${todo.completed ? 'completed' : 'not completed'}`} />
                   <span className={`todo-item-title ${todo.completed ? 'completed-text' : ''}`}>
@@ -374,7 +361,6 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
         </nav>
       </div>
 
-      {/* --- Add Todo Modal --- */}
       <Modal
         title="Add New Todo"
         open={isAddModalVisible}
@@ -400,7 +386,6 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
         </Form>
       </Modal>
 
-      {/* --- Edit Todo Modal --- */}
       <Modal
         title="Edit Todo"
         open={isEditModalVisible}
@@ -429,7 +414,6 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
         </Form>
       </Modal>
 
-      {/* --- Delete Confirmation Modal --- */}
       <Modal
         title="Confirm Delete"
         open={isDeleteConfirmVisible}
@@ -442,7 +426,6 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
         <p>Are you sure you want to delete this todo? This action cannot be undone.</p>
       </Modal>
 
-      {/* --- Success Modal --- */}
       <Modal
         open={showSuccessModal}
         title={successModalTitle}
@@ -455,9 +438,9 @@ const TodoList = ({ toggleTheme, currentTheme }) => {
         centered
       >
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          <CheckCircleOutlined style={{ fontSize: '48px', color: '#52c41a' }} />
+          <CheckCircleOutlined style={{ fontSize: '48px', color: '#28a745' }} />
         </div>
-        <p style={{ textAlign: 'center', fontSize: '1.1em', color: 'var(--text-dark)' }}>
+        <p style={{ textAlign: 'center', fontSize: '1.1em', color: '#333333' }}>
           {successModalMessage}
         </p>
       </Modal>
